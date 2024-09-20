@@ -8,7 +8,7 @@ export default function Dashboard() {
         <div className="wd-dashboard-course">
           <Link className="wd-dashboard-course-link"
                 to="/Kanbas/Courses/1234/Home">
-            <img src="/images/reactjs.png" width={200} />
+           
             <div>
               <h5>
                  CS1234 React JS
@@ -19,6 +19,7 @@ export default function Dashboard() {
               <button> Go </button>
             </div>
           </Link>
+          <img src="../images/reactjs.png" alt="reactjs.png" width={200} />
         </div>
         <div className="wd-dashboard-course"> ... </div>
         <div className="wd-dashboard-course"> ... </div>

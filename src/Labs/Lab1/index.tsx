@@ -164,7 +164,7 @@ export default function Lab1() {
         <img
           id="wd-starship"
           width="400px"
-          alt="an image of a star ship"
+          alt="a star ship"
           src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"
         />
         <br />
@@ -173,7 +173,7 @@ export default function Lab1() {
         <img
           id="wd-teslabot"
           src="images/teslabot.jpg"
-          alt="an image of a tesla bot"
+          alt="a tesla bot"
           height="200px"
         />
       </div>
