@@ -7,7 +7,6 @@ import { FaHome } from "react-icons/fa";
 import { IoStatsChart } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { IoMdNotifications } from "react-icons/io";
-{/* Find more icons */}
 export default function CourseStatus() {
   return (
     <div id="wd-course-status" style={{ width: "300px" }}>

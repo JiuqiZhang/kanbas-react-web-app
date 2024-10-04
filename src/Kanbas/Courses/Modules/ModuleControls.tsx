@@ -13,12 +13,12 @@ export default function ModulesControls() {
           Publish All</button>
         <ul className="dropdown-menu">
           <li>
-            <a id="wd-publish-all-modules-and-items-btn" className="dropdown-item" href="#">
+            <a id="wd-publish-all-modules-and-items-btn" className="dropdown-item" href="https://www.northeastern.edu/">
               <GreenCheckmark />
               Publish all modules and items</a>
           </li>
           <li>
-            <a id="wd-publish-modules-only-button" className="dropdown-item" href="#">
+            <a id="wd-publish-modules-only-button" className="dropdown-item" href="https://www.northeastern.edu/">
               <GreenCheckmark />
               Publish modules only</a>
           </li>
@@ -26,13 +26,13 @@ export default function ModulesControls() {
               wd-unpublish-modules-only with labels Unpublish all modules and items
               and Unpublish modules only */}
                <li>
-            <a id="wd-unpublish-all-modules-and-items" className="dropdown-item" href="#">
+            <a id="wd-unpublish-all-modules-and-items" className="dropdown-item" href="https://www.northeastern.edu/">
               
                 Unpublish all modules and items
             </a>
           </li>
           <li>
-            <a id="wd-unpublish-modules-only" className="dropdown-item" href="#">
+            <a id="wd-unpublish-modules-only" className="dropdown-item" href="https://www.northeastern.edu/">
             
                 Unpublish modules only
             </a>     </li>
