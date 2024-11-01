@@ -1,41 +1,72 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import {useDispatch, useSelector} from "react-redux";
+
+import { addAssignment, updateAssignment, cancelUpdate } from "./reducer";
+import { useParams, useNavigate,useLocation } from 'react-router-dom';
 import * as db from "../../Database";
 export default function AssignmentEditor() {
-  const { cid, aid } = useParams<{ cid: string; aid: string }>();
-  const assignments = db.assignments;
-  const navigate = useNavigate();
- 
-  const assignment = assignments.find((assignment) => assignment._id === aid);
+  const dispatch = useDispatch();
+    const router = useNavigate();
+    const { cid, aid } = useParams();
+    const navigate = useNavigate();
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+     const existingAssignment = assignments.find((a: any) => a.course === cid && a._id === aid)
+     const [assignment, setAssignment] = useState<any | null>(null);
+  useEffect(()=>{
+    if (existingAssignment) {
+      setAssignment(existingAssignment);
+    } else if (!aid) {
+      setAssignment({
+        title: "New Assignment",
+        description: "New Assignment Description",
+        points: 100,
+        dueDate: new Date().toISOString(),
+        availableDate: new Date().toISOString(),
+        untilDate: new Date().toISOString(),
+        _id: "",
+      });
+    }
+  },[])
 
-    console.log(aid)
+    const handleSave = () => {
+      if (!aid) {
+        const newAssignment = { ...assignment, _id: new Date().getTime().toString(), course: cid };
+        dispatch(addAssignment(newAssignment));
+      } else {
+        dispatch(updateAssignment(assignment));
+      }
+      navigate(`/Kanbas/Courses/${cid}/Assignments`);
+    };
+                             
+    const handleCancel = () => {
+      dispatch(cancelUpdate(aid));
+      navigate(`/Kanbas/Courses/${cid}/Assignments`);
+    };
 
-  if (!assignment) {
-    return <div>Assignment not found</div>;
-  }
+    const {pathname} = useLocation();
 
- 
+
 
   return (
     <div id="wd-assignment-editor" className="p-3">
-      <h2 className="mb-4">{assignment.title}</h2>
+        <h2>{aid ? "Edit Assignment" : "New Assignment"}</h2>
       <div className="mb-3">
-        <label>Assignment Name</label>
-        <input
-          type="text"
-          className="form-control"
-          value={assignment.title}
-
-        />
+      <label htmlFor="wd-name" className="form-label">Assignment Name</label>
+      <input id="wd-name" className="form-control" name="title"          value={assignment?.title || ""}
+                        onChange={(e: any) => {
+                          setAssignment({...assignment, 'title': e.target.value});
+                      }}/>
       </div>
       <div className="mb-3">
         <label>Description</label>
         <textarea
-          className="form-control"
-          rows={8}
-          value={assignment.course}
-         
-        />
+            id="wd-description"
+            className="form-control"
+            rows={12}
+            cols={50}
+            value={assignment?.description || ""}
+            onChange={(e) => {setAssignment({ ...assignment, "description": e.target.value })}}
+          />
       </div>
       <div className="row mb-3">
         <div className="col-3">
@@ -45,7 +76,8 @@ export default function AssignmentEditor() {
           <input
             type="number"
             className="form-control"
-          value={100}
+            value={assignment?.points || ""}
+          onChange={(e) => {setAssignment({ ...assignment, "points": e.target.value })}}
           />
         </div>
       </div>
@@ -133,7 +165,13 @@ export default function AssignmentEditor() {
           <label>Due</label>
         </div>
         <div className="col-9">
-          <input type="datetime-local" className="form-control" defaultValue="2024-05-13T23:59" />
+        <input
+                    type="datetime-local"
+                    id="wd-due-date"
+                    className="form-control"
+                    value={assignment?.dueDate || ""}
+                    onChange={(e) =>setAssignment({ ...assignment, "dueDate": e.target.value })}
+                  />
         </div>
       </div>
       <div className="row mb-3">
@@ -141,7 +179,13 @@ export default function AssignmentEditor() {
           <label>Available from</label>
         </div>
         <div className="col-9">
-          <input type="datetime-local" className="form-control" defaultValue="2024-05-06T00:00" />
+        <input
+                      type="datetime-local"
+                      id="wd-available-from"
+                      className="form-control"
+                      value={assignment?.availableDate || ""}
+                      onChange={(e) =>setAssignment({ ...assignment, "availableDate": e.target.value })}
+                    />
         </div>
       </div>
       <div className="row mb-3">
@@ -149,12 +193,18 @@ export default function AssignmentEditor() {
           <label>Until</label>
         </div>
         <div className="col-9">
-          <input type="datetime-local" className="form-control" defaultValue="2024-05-20T23:59" />
+        <input
+                      type="datetime-local"
+                      id="wd-available-until"
+                      className="form-control"
+                      value={assignment?.untilDate || ""}
+                      onChange={(e) =>setAssignment({ ...assignment, "untilDate": e.target.value })}
+                    />
         </div>
       </div>
       <div className="d-flex justify-content-end">
-        <button onClick={()=>{}} className="btn btn-secondary me-2">Cancel</button>
-        <button onClick={()=>{}} className="btn btn-success">Save</button>
+        <button onClick={handleCancel} className="btn btn-secondary me-2">Cancel</button>
+        <button  onClick={handleSave} className="btn btn-success">Save</button>
       </div>
     </div>
   );
