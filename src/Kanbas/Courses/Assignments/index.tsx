@@ -6,19 +6,32 @@ import LessonControlButtons from "./LessonControlButtons";
 import { useParams } from "react-router";
 import { deleteAssignment } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import * as assignmentsClient from "./client";
 
 export default function Assignments() {
     const { cid } = useParams();
     const dispatch = useDispatch();
-    const [assignmentToDelete, setAssignmentToDelete] = useState("");
-    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-    const confirmDeleteAssignment = () => {
-        dispatch(deleteAssignment(assignmentToDelete));
-        setAssignmentToDelete("");
-    };
-    const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+    const [assignments, setAssignments] = useState([]);
+
+
+  const fetchAssignments = async () => {
+    const a = await assignmentsClient.fetchAssignment(cid);
+    setAssignments(a);
+  };
+
+  const deleteAssignment = async (assignId: any) => {
+    await assignmentsClient.deleteAssignment(assignId);
+    fetchAssignments();
+  }
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
     return (
         <div id="wd-assignments">
             <AssignmentsControls cid={cid!} />
@@ -32,7 +45,7 @@ export default function Assignments() {
 
 
                 {assignments
-                    .filter((assignment: any) => assignment.course === cid).map((item: any) => (
+                   .map((item: any) => (
                         <li className="wd-assignment-list-item list-group-item p-3" style={{ borderLeft: "4px solid green" }}>
                             <div className="row align-items-center">
                                 <div className="col-auto">
@@ -55,9 +68,7 @@ export default function Assignments() {
                                 </div>
                                 <div className="col float-end">
                                     <LessonControlButtons assignmentId={item._id}
-                                        deleteAssignment={(assignmentId) => {
-                                            dispatch(deleteAssignment(assignmentId));
-                                        }} />
+                                               deleteAssignment = {deleteAssignment} />
                                 </div>
                             </div>
                         </li>
