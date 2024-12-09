@@ -3,6 +3,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
 import { FaInbox, FaRegCircleUser } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
+
 export default function KanbasNavigation() {
   const { pathname } = useLocation();
   const links = [
@@ -24,8 +25,8 @@ export default function KanbasNavigation() {
         <br />
         Account
       </Link>
-      {links.map((link) => (
-        <Link key={link.path} to={link.path} className={`list-group-item bg-black text-center border-0
+      {links.map((link,i) => (
+        <Link key={i} to={link.path} className={`list-group-item bg-black text-center border-0
               ${pathname.includes(link.label) ? "text-danger bg-white" : "text-white bg-black"}`}>
           {link.icon({ className: "fs-1 text-danger"})}
           <br />
